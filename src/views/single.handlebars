@@ -1,0 +1,39 @@
+<h2>Single</h2> 
+<section>
+    <div class="container">
+            <div class="card">
+                <div class="header">
+                    <span class="title">{{vehicles.title}}</span>
+                    <span class="price">${{vehicles.price}}</span>
+                </div>
+                <p class="desc">{{vehicles.description}}</p>
+                <ul class="lists">
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Category: {{vehicles.category}}</span>
+                    </li>
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Code: {{vehicles.code}}</span>
+                    </li>
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Stock: {{vehicles.stock}}</span>
+                    </li>
+                </ul>
+                <div class="flex-col-xs">
+                    <button type="button" onclick='itemToCart("{{{vehicles._id}}}")' class="action">Add to cart</button>
+                </div>
+                
+            </div>
+    </div>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/index.js"></script>

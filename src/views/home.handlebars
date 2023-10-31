@@ -1,0 +1,54 @@
+<script>
+    let cartId = '{{{cartId}}}'
+</script>
+<section>
+    <h1>Bienvenido, {{user.first_name}} {{user.last_name}} {{user.name}}</h1>
+    {{#if admin}}
+    <h3>Si ves este mensaje, eres Administrador</h3><span><a href="/api/sessions/logout" target="_self">logout</a></span>
+    {{else}} <h3>Usuario comun</h3><span><a href="/api/sessions/logout" target="_self">logout</a></span>
+    {{/if}}
+    <a class="action cart" href="http://localhost:8080/views/carts/{{user.cart}}">Go to Cart</a>
+    <div class="container">
+        {{#each vehicles}}
+            <div class="card">
+                <div class="header">
+                    <span class="title">{{this.title}}</span>
+                    <span class="price">${{this.price}}</span>
+                </div>
+                <p class="desc">{{this.description}}</p>
+                <ul class="lists">
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Category: {{this.category}}</span>
+                    </li>
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Code: {{this.code}}</span>
+                    </li>
+                    <li class="list">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Stock: {{this.stock}}</span>
+                    </li>
+                </ul>
+                <div class="flex-col-xs">
+                    <div class="test text-white">{{this.userCart}}</div>
+
+                    <a class="action" href="http://localhost:8080/views/vehicle/{{this._id}}">Learn More</a>
+                    {{!-- <form action="/api/carts/{{{this.userCart}}}/product{{{this._id}}}"> --}}
+                    <button type="button" onclick='itemToCart("{{{this._id}}}",cartId)' class="action">Add to cart</button>
+                    {{!-- </form> --}}
+                </div>
+                
+            </div>
+        {{/each}}
+    </div>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/index.js"></script>

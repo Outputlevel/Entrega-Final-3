@@ -1,0 +1,46 @@
+[
+	{
+		"title": "Toyota Tacoma",
+		"description": "semi nuevo",
+		"price": "34000",
+		"code": "code1",
+		"category": "pick up",
+		"status": true,
+		"thumbnails": null,
+		"stock": 10,
+		"id": 1
+	},
+	{
+		"title": "Mazda 3",
+		"description": "Compra este auto",
+		"price": "26000",
+		"code": "code2",
+		"category": "sedan",
+		"status": true,
+		"thumbnails": null,
+		"stock": 4,
+		"id": 2
+	},
+	{
+		"title": "Ford",
+		"description": "en oferta",
+		"price": "44000",
+		"code": "code3",
+		"category": "convertible",
+		"status": true,
+		"thumbnails": null,
+		"stock": 6,
+		"id": 3
+	},
+	{
+		"title": "Toyota Camry",
+		"description": "en oferta",
+		"price": "47000",
+		"code": "code3",
+		"stock": 6,
+		"status": true,
+		"thumbnails": null,
+		"category": "sedan",
+		"id": 4
+	}
+]
