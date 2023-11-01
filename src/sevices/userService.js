@@ -1,13 +1,24 @@
-import userModel from "../dao/mongo/models/users.js";
+
+import { User } from "../dao/mongo/classes/userDAO.js";
 import {createHash, isValidPassword} from '../utils/functionsUtil.js';
 
-class UserService {
+let userClass = new User()
+
+export class UserService {
+
+    async findUserGithub(user) {
+        try {
+            return await userClass.findUserGithub(user)
+        } catch (error) {
+            throw new Error(error.message.replace(/"/g, "'"));
+        }
+    }
 
     async createUser(user) {
         try {
             console.log(user)
             user.password = createHash(user.password);
-            return await userModel.create(user);
+            return await user.createUser(user);
         } catch (error) {
             throw new Error(error.message.replace(/"/g, "'"));
         }
@@ -15,7 +26,7 @@ class UserService {
 
     async login(email, password) {
         try {
-            const user = await userModel.find({email: email});
+            const user = await user.login({email: email});
             console.log(user)
 
             if (user.length > 0 && isValidPassword(user[0], password)) {
@@ -30,5 +41,3 @@ class UserService {
     }
 
 }
-
-export default UserService;

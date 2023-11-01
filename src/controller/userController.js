@@ -1,4 +1,4 @@
-import UserService from '../sevices/userService.js'
+import {UserService} from '../sevices/userService.js'
 import passport from 'passport';
 
 const US = new UserService();
@@ -63,7 +63,7 @@ export const failRegister = (req, res) => {
     res.redirect("/views/register")
 }
 ///
-export const getBussinessById = async (req, res) => {
+/* export const getBussinessById = async (req, res) => {
     const { bid } = req.params;
     const result = await businessService.getBusinessById(bid);
 
@@ -89,7 +89,7 @@ export const addProduct = async (req, res) => {
 
     if (!result) return res.status(500).send(responseError);
     res.send({status: 'success', result: 'Business Updated!'});
-}
+} */
 
 export const logout = (req, res) => {
     req.session.destroy( error => {

@@ -1,13 +1,18 @@
 import passport from 'passport';
-import {Cart} from '../dao/mongo/classes/index.js'
+import 'dotenv/config'
 import local from 'passport-local';
+
+import {Cart} from '../dao/mongo/classes/index.js'
 import GitHubStrategy from 'passport-github2'
 import userModel from '../dao/mongo/models/users.js'
 import { createHash, isValidPassword } from '../utils/functionsUtil.js';
-import 'dotenv/config'
+import { UserDTO } from '../dao/dto/userDTO.js';
+import {UserService} from '../sevices/userService.js'
 
 const localStratergy = local.Strategy;
 const cart = new Cart()
+const US = new UserService()
+
 const initializatePassport = () => {
     //github
     passport.use(
@@ -20,8 +25,9 @@ const initializatePassport = () => {
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile); 
-            let user = await userModel.findOne({$or:[{username: profile._json.login},{email:profile.emails[0].value}]})
+            console.log(profile);
+            const userGithub = {$or:[{username: profile._json.login},{email:profile.emails[0].value}]}
+            let user = await US.findUserGithub(userGithub)
             if(!user) {
                 const testPass = "1234"
                 //crear carrito para asignar al usuario nuevo
@@ -49,8 +55,9 @@ const initializatePassport = () => {
             usernameField: 'email'
         },
         async (req, username, password, done) => {
-            const {  first_name, last_name, email, age } = req.body;
-            //crear rol admin
+            const newUser = new UserDTO (req.body)
+
+            //Crear rol admin
             const emailAdmin = req.body.email.slice(0,5)
             const passwordAdmin = req.body.password.slice(0,5)
             if(emailAdmin === "admin" && passwordAdmin === "admin"){
