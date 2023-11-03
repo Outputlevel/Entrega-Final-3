@@ -1,5 +1,6 @@
 import { Router } from "express";
-import {getCarts, getCartById, createCart, deleteCart, addToCart, deleteCartById, updateCart} from '../../controller/cartController.js'
+import { userAuth } from "../../middlewares/auth.js";
+import {getCarts, getCartById, createCart, deleteCart, addToCart, deleteCartById, updateCart, cartUpdated} from '../../controller/cartController.js'
 
 const router = Router()
 
@@ -13,18 +14,19 @@ router.get('/', getCarts);
 router.get('/:cartId', getCartById);
 
 //Crear Carrito
-router.post('/', createCart);
+router.post('/',  userAuth, createCart);
 
 //Elimina carrito por Id
 router.delete('/:cartId', deleteCart);
 
 //add to cart
-router.post('/:cartId/product/:productId', addToCart);
+router.post('/:cartId/product/:productId', userAuth, addToCart);
 
 //Delete product from cart
-router.delete('/:cartId/product/:productId', deleteCartById);
+router.delete('/:cartId/product/:productId', userAuth, deleteCartById);
 
 //update quantity 
-router.put('/:cartId/product/:productId', updateCart);
+router.put('/:cartId/product/:productId', userAuth, updateCart);
+router.post('/:cartId/product/:productId', userAuth, cartUpdated); //form
 
 export default router

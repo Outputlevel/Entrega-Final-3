@@ -31,6 +31,7 @@ export const login = async (req, res) => {
             return res.status(400).send({status: "error", error: "Invalid credentials"});
         }
         req.session.user = {
+            userId: req.user._id,
             username: req.user.username,
             name: req.user.name,
             first_name: req.user.first_name,

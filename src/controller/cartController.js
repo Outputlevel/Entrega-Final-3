@@ -123,3 +123,22 @@ export const updateCart =  async (req, res) => {
         return []
     } 
 }
+///redirects
+export const cartUpdated =  async (req, res) => {
+    try {
+        const cartId = req.params.cartId;
+        const productId = req.params.productId;
+        const quantity = req.body.quantity
+        /* const productQuantity = {
+            quantity: req.body.title
+         } */
+        const addToCart = await cart.updateCart(cartId, productId, quantity) //agrega producto a carrito por su id
+        if(addToCart){
+            return res.redirect('/views');
+        }
+        return 
+    } catch (err) {
+        console.error(err)
+        return []
+    } 
+}

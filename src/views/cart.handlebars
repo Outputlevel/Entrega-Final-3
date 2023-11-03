@@ -1,22 +1,38 @@
 <h2>Carrito</h2> 
 <script>
+    let hello ="hi"
 </script>
 <section>
+    <form method="post" action="/api/tickets/create/{{user.userId}}">
+        <button type="submit" class="action cart">Purchase</button>
+        </form>
     <div class="container">
         {{#if cartEmpty}} <h2>Cart is empty</h2> {{/if}}
+     {{!--    <a class="action cart" href="http://localhost:8080/api/tickets/create/{{user.userId}}">Purchase</a> --}}
         {{#each products}}
             <div class="card">
                 <div class="header">
                     {{!-- <span class="title">{{this.id}}</span>
                     <span class="price">${{this.price}}</span> --}}
                 </div>
-                <p class="desc">Vehicle ID: {{this.productId}}</p>
+                <p class="desc text-white">Vehicle ID: {{this.productId}}</p>
                 <ul class="lists">
                     <li class="list">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                         </svg>
-                        <span>items in cart: {{this.quantity}}</span>
+                        <div>
+                        <span>items in cart:</span>
+                        <form method="post" action="/api/carts/{{../cartId}}/product/{{this.productId}}">
+                        <input type="number" placeholder="{{this.quantity}}" name="quantity">
+                        <button type="submit" class="button">Update</button>
+                        </form>
+
+                        <form method="post" action="/api/tickets/create/{{../user.userId}}">
+                        <input type="hidden" name="products" value="{{this.productId}}">
+                        <button type="submit" class="action">Buy Now</button>
+                        </div>
+                        
                     </li>
                 </ul>
                 <div class="flex-col-xs">

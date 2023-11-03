@@ -1,13 +1,15 @@
 import express from 'express';
+import 'dotenv/config'
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import passport from 'passport';
-import 'dotenv/config'
+
 
 import routerProducts from './routes/endpoints/products.js'
 import routerCart from './routes/endpoints/cart.js'
 import routerSession from './routes/endpoints/session.js'
+import routerTickets from './routes/endpoints/tickets.js'
 import viewsRouter from './routes/views/views.js';
 import handlebars from 'express-handlebars';
 import __dirname from './utils/utils.js';
@@ -15,7 +17,7 @@ import initializatePassport from './config/passportConfig.js';
 
 
 import { Server } from 'socket.io';
-import { Cart } from "./dao/mongo/classes/index.js";
+import { Cart } from "./sevices/cartService.js";
 
 export const messages = [];
 export let testPush = [] //Prepara props para handlebars
@@ -25,7 +27,7 @@ const app = express();
 
 
 /////////Mongo DB/////////
-const uri = process.env.MONGO_URI
+const uri ="mongodb+srv://outputlevel10:KnneXOY0gNm7WAjk@cardealer.mkbx3tp.mongodb.net/carDealer?retryWrites=true&w=majority"    //process.env.MONGO_URI
 mongoose.connect(uri)
 
 app.use(express.json());
@@ -38,7 +40,7 @@ app.use(session({
          mongoOptions: { useUnifiedTopology: true },
          ttl: 1500
      }),
-     secret: process.env.MONGO_SESSION_SECRET,
+     secret: '774d0bb282271ac95f185f8353b0406898f14b43', //process.env.MONGO_SESSION_SECRET,
      resave:false,
      saveUninitialized: false
  }))
@@ -52,6 +54,7 @@ app.use(passport.session());
 app.use('/api/products', routerProducts);
 app.use('/api/carts', routerCart);
 app.use('/api/sessions', routerSession);
+app.use('/api/tickets', routerTickets);
 app.use('/views', viewsRouter);
 //-------------Handlebars---------------////
 
@@ -65,7 +68,7 @@ app.set('views', `${__dirname}/../views`);
 app.set('view engine', 'handlebars');
 
 //Establece el servidor estático de archivos
-app.use(express.static( __dirname + '/public'));
+app.use(express.static( __dirname + 'public'));
 
 ///----------LISTENING ON PORT-------------/////
 const PORT = 8080;
@@ -88,7 +91,7 @@ socketServer.on('connection', socket => {
     socket.on('addProduct', data => {
         let cart = new Cart()
         console.log("dataa", data)
-        let vehicle = cart.updateCart(data.cid, data.pid)
+        let vehicle = cart.addToCart(data.cid, data.pid)
         console.log("item added")
         socketServer.emit('addedToCart', vehicle);
     });

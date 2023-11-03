@@ -1,18 +1,26 @@
-import userModel from "../models/users.js"
+import usersModel from "../models/users.js"
 
 export class User {
-    //Constructor eliminado 
-    async findUserGithub(profile) {
+    async findUser(id) {
         try {
-            return await userModel.findOne({$or:[{username: profile._json.login},{email:profile.emails[0].value}]}) 
+            return await usersModel.findOne({_id:id}).populate()
         } catch (error) {
             console.error(error);
             return [];
         }
-}
+    }
+
+    async findUserGithub(profile) {
+        try {
+            return await usersModel.findOne({$or:[{username: profile._json.login},{email:profile.emails[0].value}]}) 
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
     async createUser(user) {
             try {
-                return await userModel.create(user); 
+                return await usersModel.create(user); 
             } catch (error) {
                 console.error(error);
                 return [];
@@ -20,7 +28,7 @@ export class User {
     }
     async login(email) {
         try {
-            return await userModel.create(email); 
+            return await usersModel.create(email); 
         } catch (error) {
             console.error(error);
             return [];

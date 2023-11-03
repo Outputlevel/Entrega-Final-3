@@ -24,4 +24,19 @@ function loggedOut(req, res, next) {
     next();
 }
 
-export  {auth, logged, loggedOut};
+const adminAuth = function (req, res, next) {
+    if (req.session.user.role === "admin") {
+        return next();
+    }
+    return res.status(403).send("Unauthorized user");
+}
+
+const userAuth = function (req, res, next) {
+    console.log(req.session.user)
+    if (req.session.user.role === "user") {
+        return next();
+    }
+    return res.status(403).send("Unauthorized user");
+}
+
+export  {auth, logged, loggedOut, adminAuth, userAuth};

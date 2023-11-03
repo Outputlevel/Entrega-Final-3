@@ -132,7 +132,7 @@ export class Cart {
 
    async updateCart(cartId, cart) {
          try {
-            return cartsModel.updateOne({_id:cartId, cart})
+            return cartsModel.updateOne({_id:cartId}, cart)
         } catch (err) {
             console.error(err)
             return []

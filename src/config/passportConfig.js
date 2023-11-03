@@ -4,7 +4,7 @@ import local from 'passport-local';
 
 import {Cart} from '../dao/mongo/classes/index.js'
 import GitHubStrategy from 'passport-github2'
-import userModel from '../dao/mongo/models/users.js'
+import usersModel from '../dao/mongo/models/users.js'
 import { createHash, isValidPassword } from '../utils/functionsUtil.js';
 import { UserDTO } from '../dao/dto/userDTO.js';
 import {UserService} from '../sevices/userService.js'
@@ -18,8 +18,8 @@ const initializatePassport = () => {
     passport.use(
         'github',
         new GitHubStrategy({
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.SECRET_ID,
+            clientID: '774d0bb282271ac95f185f8353b0406898f14b43', //process.env.CLIENT_ID,
+            clientSecret: 'Iv1.0286a2a26f33742e', //process.env.SECRET_ID,
             callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
             scope:["user:email"],
     },
@@ -39,7 +39,7 @@ const initializatePassport = () => {
                     password: createHash(testPass),
                     cart: newCart._id
                 }
-                let result = await userModel.create(newUser);
+                let result = await usersModel.create(newUser);
                 done(null, result);
             } else {
                 done(null, user);
@@ -56,6 +56,7 @@ const initializatePassport = () => {
         },
         async (req, username, password, done) => {
             const newUser = new UserDTO (req.body)
+            const {  first_name, last_name, email, age } = req.body;
 
             //Crear rol admin
             const emailAdmin = req.body.email.slice(0,5)
@@ -65,14 +66,14 @@ const initializatePassport = () => {
                 console.log("Passport, Admin Asignado")
             }
             try {
-                let user = await userModel.findOne({ email: username});
+                let user = await usersModel.findOne({ email: username});
                 if(user) {
                     console.log('User already exists');
                     return done(null, false);
                 }
                 const newCart = await cart.createCart()
                 const newUser = {first_name, last_name, email, age, role:req.body.role, password: createHash(password), cart:newCart};
-                let result = await userModel.create(newUser);
+                let result = await usersModel.create(newUser);
 
                 return done(null, result);
             } catch (error) {
@@ -86,7 +87,8 @@ const initializatePassport = () => {
         { usernameField: 'email' },
         async (username, password, done) => {
             try {
-                const user = await userModel.findOne({$or:[{email: username},{username: username}]});
+                const user = await usersModel.findOne({$or:[{email: username},{username: username}]});//Busca email o username
+                console.log(user)
                 if (!user) {
                     console.log('passport local, User does not exist');
                     return (null, false);
@@ -106,7 +108,7 @@ const initializatePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findById(id);
+        const user = await usersModel.findById(id);
         done(null, user);
     })
 }

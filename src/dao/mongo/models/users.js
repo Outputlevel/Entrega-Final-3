@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userCollection = "users";
+const userCollection = 'users';
 
 const userSchema = mongoose.Schema({
     name: { //github
@@ -50,6 +50,6 @@ const userSchema = mongoose.Schema({
     }
 });
 
-const userModel = mongoose.model(userCollection, userSchema);
+const usersModel = mongoose.model(userCollection, userSchema);
 
-export default userModel;
+export default usersModel;

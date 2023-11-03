@@ -5,6 +5,14 @@ import {createHash, isValidPassword} from '../utils/functionsUtil.js';
 let userClass = new User()
 
 export class UserService {
+    async findUser(id) {
+        try {
+            return await userClass.findUser(id) 
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
 
     async findUserGithub(user) {
         try {

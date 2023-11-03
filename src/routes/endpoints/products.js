@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { adminAuth } from "../../middlewares/auth.js";
 import {getProducts,searchProducts, getProductById, addProduct, updateVehicle, deleteVehicleById,realtimeProducts} from '../../controller/productController.js'
 const router = Router()
 ///-----------------------------PRODUCTS-----------------------------////
@@ -12,13 +13,13 @@ router.get('/search',searchProducts);
 router.get('/:idVehicle', getProductById);
 
 //Agrega nuevo vehiculo
-router.post('/', addProduct);
+router.post('/', adminAuth, addProduct);
 
 //Actualiza vehiculo
-router.put('/:idVehicle', updateVehicle);
+router.put('/:idVehicle', adminAuth, updateVehicle);
 
 //Elimina vehiculo por Id
-router.delete('/:idVehicle', deleteVehicleById);
+router.delete('/:idVehicle', adminAuth, deleteVehicleById);
 
 
 ///Realtime Products

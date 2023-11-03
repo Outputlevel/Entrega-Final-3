@@ -163,7 +163,9 @@ export const getCartById = async (req, res) => {
         arrProps = {
             title: "cart",
             style: "style.css",
+            cartId:cartId,
             cart: cart,
+            user: req.session.user,
             products: cart.products,
             cartEmpty: true
         }

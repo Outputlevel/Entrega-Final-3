@@ -1,4 +1,5 @@
 import {Cart as CartDAO, Product as ProductDAO} from '../dao/mongo/classes/index.js'
+import { cartsModel } from '../dao/mongo/models/carts.js'
 
 const id = 0
 let products = []
@@ -69,19 +70,21 @@ export class Cart {
    //actualiza carrito con nueva cantidad de producto
    async updateCart(cid, pid, quantity) {
         try{
-            const getCart =  await this.getCartById(cid)
+            const getCart =  await cartClass.getCartById(cid)
             const productArr = await this.productClass.getProductById(pid)
-            if(!getCart || !productArr || !quantity){
+            if(!getCart || !productArr){
                 return null
             }
             const newArr = getCart.products.filter( e => e.productId != productArr._id)
-            if(quantity>1){
-                //remueve producto del carrito
-                getCart.products = newArr
-                return await cartClass.updateCart(cid, getCart)
+            console.log(newArr)
+            if(quantity === 0){
+                //remueve producto del carrito      
+                return await cartsModel.updateMany({_id:cid}, {$pull: {products: {productId:productArr._id}}})
             }
             //Empuja el array nueva cantitad del producto
-            newArr.push({productId: cartQty.productId, quantity: quantity, _id: cartQty.id })           
+            const productUpdated = getCart.products.find( e => e.productId == productArr._id)
+            productUpdated.quantity = quantity
+            newArr.push(productUpdated)           
             getCart.products = newArr
             return await cartClass.updateCart(cid, getCart)
         }catch (err) {
